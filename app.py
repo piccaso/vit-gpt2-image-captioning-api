@@ -20,9 +20,7 @@ tokenizer = AutoTokenizer.from_pretrained('nlpconnect/vit-gpt2-image-captioning'
 device = torch.device(('cuda' if torch.cuda.is_available() else 'cpu'))
 model.to(device)
 
-max_length = 16
-num_beams = 4
-gen_kwargs = {'max_length': max_length, 'num_beams': num_beams}
+gen_kwargs = {'max_length': 16, 'num_beams': 4}
 
 def predict_text(image_path):
     images = []
@@ -61,5 +59,12 @@ def upload_file():
             filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filename)
             return predict_text(filename)
-            # return redirect(url_for('download_file', name=filename))
-    return app.send_static_file("index.html")
+    return '''
+        <!doctype html>
+        <title>Upload new File</title>
+        <h1>Upload new File</h1>
+        <form method=post enctype=multipart/form-data>
+            <input type=file name=file>
+            <input type=submit value=Upload>
+        </form>
+    '''
