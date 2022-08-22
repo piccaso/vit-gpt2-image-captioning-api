@@ -22,3 +22,8 @@ docker build -t predict-text .
 # Run
 docker run --rm -it -p 9000:9000 predict-text
 ```
+
+## Prebuilt
+``` sh
+docker run --rm -it -p 9000:9000 quay.io/open/vit-gpt2-image-captioning-api
+```
