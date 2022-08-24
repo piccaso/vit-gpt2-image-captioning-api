@@ -59,12 +59,4 @@ def upload_file():
             filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filename)
             return predict_text(filename)
-    return '''
-        <!doctype html>
-        <title>Upload new File</title>
-        <h1>Upload new File</h1>
-        <form method=post enctype=multipart/form-data>
-            <input type=file name=file>
-            <input type=submit value=Upload>
-        </form>
-    '''
+    return app.send_static_file("index.html")
