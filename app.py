@@ -6,6 +6,7 @@ import sys
 import torch
 import PIL
 from transformers import VisionEncoderDecoderModel, ViTFeatureExtractor, AutoTokenizer
+from random import randrange
 
 UPLOAD_FOLDER = os.path.join(tempfile.gettempdir())
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
@@ -55,8 +56,10 @@ def upload_file():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
-            filename = secure_filename(file.filename)
+            filename = secure_filename(('%030x' % randrange(16**30)) + file.filename)
             filename = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(filename)
-            return predict_text(filename)
+            prtext = predict_text(filename)
+            os.remove(filename)
+            return prtext
     return app.send_static_file("index.html")
